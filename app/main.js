@@ -1,12 +1,19 @@
+"use strict";
+
+
 import Vue from 'nativescript-vue';
 import App from './components/App';
-// import VueDevtools from 'nativescript-vue-devtools'; // vue devtools
 
 // personnal import
 // import LocalStorage from './js/LocalStorage';
+import GroceryItem  from './js/GroceryItem';
+import tasksData    from './js/datas/task-data.json';
 
 // Prints Vue logs when --env.production is *NOT* set while building
 Vue.config.silent = (TNS_ENV === 'production');
+
+// VueDevtools
+// import VueDevtools from 'nativescript-vue-devtools'; // vue devtools
 // Vue.use(VueDevtools); // vue devtools
 
 new Vue({
@@ -15,9 +22,10 @@ new Vue({
     <Frame>
         <Page>
             <StackLayout>
-                <ListView v-for="task in todolist">
+                <ListView v-for="task in displayTasks">
                     <v-template>
-                        <Label :text="task.message"></Label>
+                        <!-- <Label :text="task.message"></Label> -->
+                        <GroceryItem :currentTask="task"></GroceryItem>
                     </v-template>
                 </ListView>
                 <TextField v-model="newTask"></TextField>
@@ -29,26 +37,31 @@ new Vue({
 
     data: {
         newTask: "",
-        todolist: [{
-            id: 0,
-            message: "Faire la vaisselle",
-            done: false
-        },
-        {
-            id: 1,
-            message: "Nettoyer les chiottes",
-            done: false
-        }]
+        todolist: tasksData.tasks
     },
 
     methods: {
         addTask() {
             this.todolist.push({
-                id: 3,
+                id: this.getId,
                 message: this.newTask,
                 done: false
             });
             this.newTask = "";
+        },
+        getId() {
+            const lastIndex = this.todolist.length - 1;
+            return this.todolist[lastIndex].id + 1;
+        }
+    },
+
+    computed: {
+        displayTasks() {
+            const tempTask = [{
+                message: this.newTask
+            }];
+            const todolist = this.todolist.concat(tempTask);
+            return todolist;
         }
     }
 }).$start();

@@ -1,0 +1,16 @@
+{
+    "tasks": [
+        {
+            "id": 0,
+            "message": "Faire la vaisselle",
+            "done": false,
+            "deleted": false
+        },
+        {
+            "id": 1,
+            "message": "Nettoyer les chiottes",
+            "done": false,
+            "deleted": false
+        }
+    ]
+}
