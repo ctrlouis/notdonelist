@@ -43,7 +43,12 @@ new Vue({
 
     methods: {
         addTask() {
-            this.todolist
+            this.todolist.push({
+                id: 3,
+                message: this.newTask,
+                done: false
+            });
+            this.newTask = "";
         }
     }
 }).$start();
