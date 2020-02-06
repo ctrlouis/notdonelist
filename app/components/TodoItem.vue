@@ -2,6 +2,8 @@
   <GridLayout columns="100, *">
     <Label col="0" :text="statusText" @tap="toggle"></Label>
     <Label col="1" :text="currentTask.message" class="task-message" :class="isDone"></Label>
+    <!-- <Button v-if="isArchived" text="Recover" @tap="recover"></Button> -->
+    <!-- <Button text="Delete" @tap="onDeleteTap"></Button> -->
   </GridLayout>
 </template>
 
@@ -13,12 +15,6 @@ export default {
     return {};
   },
 
-  computed: {
-    statusText: function() {
-      return this.currentTask.done ? "Done" : "Not done";
-    }
-  },
-
   methods: {
     toggle: function() {
       this.$emit("toggleDone", this.currentTask);
@@ -26,18 +22,26 @@ export default {
   },
 
   computed: {
+    statusText: function() {
+      return this.currentTask.done ? "Done" : "Not done";
+    },
+
     isDone: function() {
       if (this.currentTask.done) {
         return "done";
       }
 
       return "";
+    },
+
+    isArchived: function() {
+      return this.currentTask.deleted;
     }
   }
 };
 </script>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .task-message {
   animation-name: show;
   animation-duration: 4s;

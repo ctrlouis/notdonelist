@@ -5,6 +5,7 @@
     </ActionBar>
     <StackLayout>
       <Todolist :tasks="tasks" />
+      <Button text="Archived" @tap="onArchivedTap"></Button>
     </StackLayout>
   </Page>
 </template>
@@ -13,10 +14,12 @@
 import tasksData from "./../js/datas/task-data.json";
 import Todolist from "./Todolist";
 import TodoCreate from "./TodoCreate";
+import TodoArchived from "./TodoArchived";
 
 export default {
   components: {
-    Todolist
+    Todolist,
+    TodoArchived
   },
 
   data() {
@@ -28,13 +31,27 @@ export default {
   methods: {
     onCreateTap() {
       const newId = this.generateId();
-      this.$showModal(TodoCreate, { props: { id: newId } })
-        .then((newTask) => {
-            if (newTask) {
-                this.tasks.push(newTask);
-            }
-        });
+      this.$showModal(TodoCreate, { props: { id: newId } }).then(newTask => {
+        if (newTask) {
+          this.tasks.push(newTask);
+        }
+      });
     },
+    
+    onArchivedTap() {
+      this.$navigateTo(TodoArchived, {
+        props: {
+          tasks: this.tasks
+        },
+        animated: true,
+        transitionAndroid: {
+          name: "explode",
+          duration: 1000,
+          curve: "easeOut"
+        }
+      });
+    },
+
     generateId() {
       const lastIndex = this.tasks.length - 1;
       return this.tasks[lastIndex].id + 1;

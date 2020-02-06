@@ -26,7 +26,7 @@ export default {
         done: false,
         deleted: false
       };
-      this.$modal.close(newTask)
+      this.$modal.close(newTask);
     }
   }
 };

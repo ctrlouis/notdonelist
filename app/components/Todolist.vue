@@ -1,9 +1,16 @@
 <template>
-  <ListView v-for="task in tasks" @itemTap="onItemTap">
-    <v-template>
-      <TodoItem @toggleDone="onToggleDone" :currentTask="task"></TodoItem>
-    </v-template>
-  </ListView>
+  <StackLayout>
+    <ListView for="task in leftTask" @itemTap="onItemTap">
+      <v-template>
+        <TodoItem @toggleDone="onToggleDone" :currentTask="task"></TodoItem>
+      </v-template>
+    </ListView>
+    <ListView for="task in doneTask" @itemTap="onItemTap">
+      <v-template>
+        <TodoItem @toggleDone="onToggleDone" :currentTask="task"></TodoItem>
+      </v-template>
+    </ListView>
+  </StackLayout>
 </template>
 
 <script>
@@ -20,13 +27,10 @@ export default {
 
   methods: {
     onToggleDone(currentTask) {
-      //   currentTask.done = !currentTask.done;
       const replaceTask = Object.assign(currentTask, {
         done: !currentTask.done
       });
-
       const index = this.tasks.findIndex(i => i.id === currentTask.id);
-
       this.tasks = Object.assign([], this.tasks, { index: replaceTask });
     },
 
@@ -42,6 +46,18 @@ export default {
           curve: "easeOut"
         }
       });
+    }
+  },
+
+  computed: {
+    notDeletedTask() {
+      return this.tasks.filter(task => !task.deleted);
+    },
+    leftTask() {
+      return this.tasks.filter(task => !task.done);
+    },
+    doneTask() {
+      return this.tasks.filter(task => task.done);
     }
   }
 };
