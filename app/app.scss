@@ -1,9 +1,17 @@
 // NativeScript core theme
 // @see https://docs.nativescript.org/ui/theme
-@import '~@nativescript/theme/core';
-@import '~@nativescript/theme/default';
+// @import '~@nativescript/theme/core';
+// @import '~@nativescript/theme/default';
 
 // Override variables here
 
 // Global SCSS styling
 // @see https://docs.nativescript.org/ui/styling
+
+// import perso
+@import './animate.css';
+
+ActionBar {
+    background-color: #FF8C00;
+    color: #ffffff;
+}
