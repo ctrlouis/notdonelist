@@ -4,12 +4,14 @@
       <Button text="Go back" @tap="onBackTap"></Button>
       <Label :text="selectedTask.message"></Label>
       <Button :text="statusText" @tap="toggle"></Button>
-      <Button text="Delete" @tap="onDeleteTap"></Button>
+      <Button v-if="selectedTask.done" text="Delete" @tap="onDeleteTap"></Button>
     </StackLayout>
   </Page>
 </template>
 
 <script>
+import TodoConfirm from "./TodoConfirm";
+
 export default {
   props: ["selectedTask"],
 
@@ -31,7 +33,11 @@ export default {
       this.selectedTask.done = !this.selectedTask.done;
     },
     onDeleteTap: function() {
-      this.selectedTask.deleted = true;
+      this.$showModal(TodoConfirm).then(confirmation => {
+        if (confirmation) {
+          this.selectedTask.deleted = true;
+        }
+      });
     }
   }
 };
