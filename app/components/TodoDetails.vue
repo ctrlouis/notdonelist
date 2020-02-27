@@ -43,6 +43,10 @@ export default {
       this.$showModal(TodoConfirm).then(confirmation => {
         if (confirmation) {
           this.selectedTask.deleted = true;
+          db.updateDocument(this.selectedTask._id, {
+            deleted: this.selectedTask.deleted
+          });
+          this.$navigateBack();
         }
       });
     }
