@@ -10,8 +10,6 @@
 
 <script>
 export default {
-  props: ["id"],
-
   data: function() {
     return {
       newTask: ""
@@ -21,7 +19,6 @@ export default {
   methods: {
     onSaveTap: function() {
       const newTask = {
-        id: this.id,
         message: this.newTask,
         done: false,
         deleted: false

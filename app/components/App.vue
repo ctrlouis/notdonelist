@@ -12,12 +12,20 @@
 </template>
 
 <script>
-import tasksData from "./../js/datas/task-data.json";
+// import tasksData from "./../js/datas/task-data.json";
 import Todolist from "./Todolist";
 import TodoCreate from "./TodoCreate";
 import TodoArchived from "./TodoArchived";
-
+import { Couchbase, ConcurrencyMode } from 'nativescript-couchbase-plugin';
 import appSettings from "tns-core-modules/application-settings";
+
+const dbName = 'tasks';
+const db = new Couchbase(dbName);
+
+const tasks = db.query({
+  select: ['_id', 'message', 'done', 'deleted'],
+  from: dbName
+});
 
 export default {
   components: {
@@ -27,14 +35,15 @@ export default {
 
   data() {
     return {
-      tasks: tasksData.tasks
+      tasks: tasks
     };
   },
 
   methods: {
     onCreateTap() {
-      const newId = this.generateId();
-      this.$showModal(TodoCreate, { props: { id: newId } }).then(newTask => {
+      this.$showModal(TodoCreate).then(newTask => {
+        db.createDocument(newTask);
+
         if (newTask) {
           this.tasks.unshift(newTask);
         }
@@ -53,11 +62,6 @@ export default {
           curve: "easeOut"
         }
       });
-    },
-
-    generateId() {
-      const lastIndex = this.tasks.length - 1;
-      return this.tasks[lastIndex].id + 1;
     }
   }
 };

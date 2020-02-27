@@ -16,6 +16,10 @@
 <script>
 import TodoItem from "./TodoItem";
 import TodoDetails from "./TodoDetails";
+import { Couchbase, ConcurrencyMode } from 'nativescript-couchbase-plugin';
+
+const dbName = 'tasks';
+const db = new Couchbase(dbName);
 
 export default {
   components: {
@@ -30,7 +34,12 @@ export default {
       const replaceTask = Object.assign(currentTask, {
         done: !currentTask.done
       });
-      const index = this.tasks.findIndex(i => i.id === currentTask.id);
+  
+      db.updateDocument(currentTask._id, {
+        done: replaceTask.done
+      });
+
+      const index = this.tasks.findIndex(i => i._id === currentTask._id);
       this.tasks = Object.assign([], this.tasks, { index: replaceTask });
     },
 
@@ -46,6 +55,10 @@ export default {
           curve: "easeOut"
         }
       });
+    },
+
+    onEmit(value) {
+      console.log(value);
     }
   },
 
