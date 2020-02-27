@@ -50,14 +50,14 @@ export default {
   },
 
   computed: {
-    notDeletedTask() {
-      return this.tasks.filter(task => !task.deleted);
-    },
     leftTask() {
-      return this.tasks.filter(task => !task.done);
+      return this.tasks.filter(task => !task.done && !task.deleted);
     },
     doneTask() {
-      return this.tasks.filter(task => task.done);
+      return this.tasks.filter(task => task.done &&!task.deleted);
+    },
+    notDeletedTask() {
+      return this.tasks.filter(task => !task.deleted);
     }
   }
 };
