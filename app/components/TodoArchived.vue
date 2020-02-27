@@ -1,7 +1,7 @@
 <template>
   <Page>
     <Button text="Go back" @tap="onBackTap"></Button>
-    <ListView v-for="task in deletedTask" @itemTap="onItemTap">
+    <ListView for="task in deletedTask" @itemTap="onItemTap">
       <v-template>
         <TodoItem @toggleDone="onToggleDone" :currentTask="task"></TodoItem>
       </v-template>
