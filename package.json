@@ -20,7 +20,7 @@
     "dependencies": {
         "@nativescript/theme": "^2.2.1",
         "@vue/devtools": "^5.3.3",
-        "nativescript-couchdb": "^0.6.23",
+        "nativescript-couchbase-plugin": "^0.9.6",
         "nativescript-socket.io": "^0.11.1",
         "nativescript-socketio": "^3.3.1",
         "nativescript-toast": "^2.0.0",
