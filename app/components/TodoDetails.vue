@@ -11,6 +11,10 @@
 
 <script>
 import TodoConfirm from "./TodoConfirm";
+import { Couchbase, ConcurrencyMode } from 'nativescript-couchbase-plugin';
+
+const dbName = 'tasks';
+const db = new Couchbase(dbName);
 
 export default {
   props: ["selectedTask"],
@@ -29,8 +33,11 @@ export default {
     onBackTap: function() {
       this.$navigateBack();
     },
-    toggle: function() {
+    toggle: function() {  
       this.selectedTask.done = !this.selectedTask.done;
+      db.updateDocument(this.selectedTask._id, {
+        done: this.selectedTask.done
+      });
     },
     onDeleteTap: function() {
       this.$showModal(TodoConfirm).then(confirmation => {
