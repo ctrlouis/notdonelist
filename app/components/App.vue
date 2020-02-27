@@ -3,6 +3,7 @@
     <ActionBar title="Todolist">
       <ActionItem text="Add" @tap="onCreateTap"></ActionItem>
     </ActionBar>
+
     <StackLayout>
       <Todolist :tasks="tasks" />
       <Button text="Archived" @tap="onArchivedTap"></Button>
@@ -15,6 +16,8 @@ import tasksData from "./../js/datas/task-data.json";
 import Todolist from "./Todolist";
 import TodoCreate from "./TodoCreate";
 import TodoArchived from "./TodoArchived";
+
+import appSettings from "tns-core-modules/application-settings";
 
 export default {
   components: {
@@ -33,11 +36,11 @@ export default {
       const newId = this.generateId();
       this.$showModal(TodoCreate, { props: { id: newId } }).then(newTask => {
         if (newTask) {
-          this.tasks.push(newTask);
+          this.tasks.unshift(newTask);
         }
       });
     },
-    
+
     onArchivedTap() {
       this.$navigateTo(TodoArchived, {
         props: {
