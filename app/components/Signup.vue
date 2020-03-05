@@ -36,10 +36,6 @@ export default {
       onSignup: function() {
 
       }
-  },
-
-  computed: {
-
   }
 };
 </script>
