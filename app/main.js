@@ -3,6 +3,7 @@
 
 import Vue from 'nativescript-vue';
 import App from './components/App';
+import Auth from './components/Auth';
 
 // personnal import
 // import LocalStorage from './js/LocalStorage';
@@ -18,10 +19,10 @@ const loggedIn = false;
 
 new Vue({
     render: function(h) {
-        if (!loggedIn) {
+        if (loggedIn) {
             return h("frame", [h(App)]);
         } else {
-            // return h("frame", [h(App1)]);
+            return h("frame", [h(Auth)]);
         }
     }
 }).$start();
