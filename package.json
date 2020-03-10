@@ -21,6 +21,7 @@
         "@nativescript/theme": "^2.2.1",
         "@vue/devtools": "^5.3.3",
         "axios": "^0.19.2",
+        "btoa": "^1.2.1",
         "nativescript-couchbase-plugin": "^0.9.6",
         "nativescript-socket.io": "^0.11.1",
         "nativescript-socketio": "^3.3.1",
