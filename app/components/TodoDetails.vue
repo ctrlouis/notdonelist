@@ -34,10 +34,12 @@ export default {
       this.$navigateBack();
     },
     toggle: function() {  
-      this.selectedTask.done = !this.selectedTask.done;
-      db.updateDocument(this.selectedTask._id, {
+      const update = db.updateDocument(this.selectedTask._id, {
         done: this.selectedTask.done
       });
+      // if (update) {
+        this.selectedTask.done = !this.selectedTask.done;
+      // }
     },
     onDeleteTap: function() {
       this.$showModal(TodoConfirm).then(confirmation => {

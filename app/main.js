@@ -15,15 +15,9 @@ Vue.config.silent = (TNS_ENV === 'production');
 // import VueDevtools from 'nativescript-vue-devtools'; // vue devtools
 // Vue.use(VueDevtools); // vue devtools
 
-const loggedIn = false;
-
 new Vue({
     render: function(h) {
-        if (loggedIn) {
-            return h("frame", [h(App)]);
-        } else {
-            return h("frame", [h(Auth)]);
-        }
+        return h("frame", [h(Auth)]);
     }
 }).$start();
 
