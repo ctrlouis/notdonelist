@@ -44,8 +44,8 @@ export default {
 
                 const url = `${this.api}/users/signin`;
                 axios.post(url, {}, basicAuth)
-                .then((result) => {
-                    this.saveToken(result.data.token);
+                .then((credentials) => {
+                    this.saveCredentials(credentials.data);
                     this.goToApp();
                 })
                 .catch(err => alert(err.message));
@@ -83,10 +83,11 @@ export default {
             }
         },
 
-        saveToken(token) {
+        saveCredentials(credentials) {
             this.removeCredentials();
             dbCredentials.createDocument({
-                "token": token
+                "token": credentials.token,
+                "uuid": credentials.user.uuid
             });
         },
 
@@ -103,14 +104,21 @@ export default {
                     select: [],
                     limit: 1
                 });
-                resolve(credentials.length > 0);
+                this.verifyToken(credentials[0].token)
+                .then(connected => resolve(connected))
+                .catch(err => reject(err));
             });
         },
 
-        verifyToken() {
+        verifyToken(token) {
             return new Promise((resolve, reject) => {
                 const url = `${this.api}/users/check-token`;
-                axios.post(url, {}, )
+                const bearerToken = {
+                    headers: { Authorization: `Bearer ${token}` }
+                };
+                axios.post(url, {}, bearerToken)
+                .then(res => resolve(true))
+                .catch(err => resolve(false));
             });
         },
 
