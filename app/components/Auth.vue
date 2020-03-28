@@ -1,7 +1,7 @@
 <template>
   <Page>
     <StackLayout>
-        <Signin v-if="account" @toggleAccount="toggleAccount" @connected="goToApp"></Signin>
+        <Signin v-if="account" @toggleAccount="toggleAccount"></Signin>
         <Signup v-else @toggleAccount="toggleAccount"></Signup>
     </StackLayout>
   </Page>
