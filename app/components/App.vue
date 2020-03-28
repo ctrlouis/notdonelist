@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+import btoa from 'btoa';
 import Auth from "./Auth";
 import Todolist from "./Todolist";
 import TodoCreate from "./TodoCreate";
@@ -19,9 +21,7 @@ import TodoArchived from "./TodoArchived";
 import { Couchbase, ConcurrencyMode } from 'nativescript-couchbase-plugin';
 import appSettings from "tns-core-modules/application-settings";
 
-const dbName = 'tasks';
-const db = new Couchbase(dbName);
-const dbCredentials = new Couchbase('credentials');
+if (!global.btoa) global.btoa = btoa;
 
 const tasks = db.query({
 	select: ['_id', 'message', 'done', 'deleted'],
