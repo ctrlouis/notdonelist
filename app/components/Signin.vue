@@ -14,7 +14,7 @@ import { Couchbase, ConcurrencyMode } from 'nativescript-couchbase-plugin';
 
 import App from './App.vue';
 
-if (!global.btoa) { global.btoa = btoa; }
+if (!global.btoa) global.btoa = btoa;
 
 
 const dbName = 'credentials';
