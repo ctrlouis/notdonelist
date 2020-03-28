@@ -19,22 +19,22 @@ const dbName = 'credentials';
 const dbCredentials = new Couchbase(dbName);
 
 export default {
-  components: {
-    Signin,
-    Signup
-  },
+	components: {
+		Signin,
+		Signup
+	},
 
-  data() {
-    return {
-        account: true
-    };
-  },
+	data() {
+		return {
+			account: true
+		};
+	},
 
-  methods: {
-    toggleAccount() {
-        this.account = !this.account;
-    }
-  }
+	methods: {
+		toggleAccount() {
+			this.account = !this.account;
+		}
+	}
 };
 </script>
 
