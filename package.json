@@ -10,11 +10,11 @@
     "nativescript": {
         "id": "org.nativescript.application",
         "templateVersion": "v2",
-        "tns-android": {
-            "version": "6.3.1"
-        },
         "tns-ios": {
             "version": "6.3.0"
+        },
+        "tns-android": {
+            "version": "6.3.1"
         }
     },
     "dependencies": {
