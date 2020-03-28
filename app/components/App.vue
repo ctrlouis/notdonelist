@@ -23,10 +23,16 @@ import appSettings from "tns-core-modules/application-settings";
 
 if (!global.btoa) global.btoa = btoa;
 
-const tasks = db.query({
-	select: ['_id', 'message', 'done', 'deleted'],
-	from: dbName
-});
+
+const dbTasksName = 'tasks';
+const dbTask = new Couchbase(dbTasksName);
+const dbCredName = 'credentials';
+const dbCredentials = new Couchbase(dbCredName);
+
+// const tasks = db.query({
+// 	select: ['_id', 'message', 'done', 'deleted'],
+// 	from: dbName
+// });
 
 export default {
 	components: {
@@ -36,14 +42,41 @@ export default {
 
 	data() {
 		return {
-			tasks: tasks
+			tasks: [],
+			credentials: null,
+			api: "https://api.todolist.sherpa.one"
 		};
 	},
 
 	methods: {
+		getTasks() {
+			this.emptyTasks();
+			this.fetchTasks()
+			.then(tasks => {
+				tasks.forEach(task => this.tasks.push(tasks));
+			})
+			.catch(err => alert(err));
+		},
+
+		emptyTasks() {
+			while(this.tasks.length > 0) this.tasks.shift();
+		},
+
+		fetchTasks() {
+			return new Promise((resolve, reject) => {
+				const url = `${this.api}/users/${this.credentials.uuid}/todos`;
+                const bearerToken = {
+					headers: { Authorization: `Bearer ${this.credentials.token}` }
+				};
+                axios.get(url, bearerToken)
+                .then(res => resolve(res.data.todos))
+                .catch(err => reject(err));
+            });
+		},
+
 		onCreateTap() {
 			this.$showModal(TodoCreate).then(newTask => {
-				db.createDocument(newTask);
+				dbTask.createDocument(newTask);
 
 				if (newTask) {
 					this.tasks.unshift(newTask);
@@ -53,15 +86,15 @@ export default {
 
 		onArchivedTap() {
 			this.$navigateTo(TodoArchived, {
-			props: {
-				tasks: this.tasks
-			},
-			animated: true,
-			transitionAndroid: {
-				name: "explode",
-				duration: 1000,
-				curve: "easeOut"
-			}
+				props: {
+					tasks: this.tasks
+				},
+				animated: true,
+				transitionAndroid: {
+					name: "explode",
+					duration: 1000,
+					curve: "easeOut"
+				}
 			});
 		},
 
@@ -78,6 +111,14 @@ export default {
 			// 	});
 			// }
 		}
+	},
+
+	created() {
+		const credentials = dbCredentials.query({
+			limit: 1
+		});
+		this.credentials = credentials[0];
+		this.getTasks();
 	}
 };
 </script>
