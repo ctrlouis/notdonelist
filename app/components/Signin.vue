@@ -30,7 +30,29 @@ export default {
     },
 
     methods: {
-        checkForm: function() {
+        onSignin() {
+            const errors = this.checkForm();
+            if (errors.length > 0) {
+                alert(errors);
+            } else {
+                const basicAuth = {
+                    auth: {
+                        username: this.mail,
+                        password: this.password
+                    }
+                };
+
+                const url = `${this.api}/users/signin`;
+                axios.post(url, {}, basicAuth)
+                .then((result) => {
+                    this.saveToken(result.data.token);
+                    this.goToApp();
+                })
+                .catch(err => alert(err.message));
+            }
+        },
+
+        checkForm() {
             let error = "";
             let errors = [];
             
@@ -47,75 +69,62 @@ export default {
             }
 
             return errors;
-            },
-            onSignin: function() {
-                const errors = this.checkForm();
-                if (errors.length > 0) {
-                    alert(errors);
-                } else {
-                    const basicAuth = {
-                        auth: {
-                            username: this.mail,
-                            password: this.password
-                        }
-                    };
+        },
 
-                    const url = `${this.api}/users/signin`;
-                    axios.post(url, {}, basicAuth)
-                    .then((result) => {
-                        this.saveToken(result.data.token);
-                        this.goToApp();
-                    })
-                    .catch(err => alert(err.message));
-                }
-            },
-            saveToken: function(token) {
-                this.removeCredentials();
-                dbCredentials.createDocument({
-                    "token": token
-                });
-            },
-            getToken: function(token) {
+        getToken(token) {
+            const credentials = dbCredentials.query({
+                select: [],
+                limit: 1
+            });
+            if (credentials.length <= 0) {
+                return null;
+            } else {
+                return credentials[0].token;
+            }
+        },
+
+        saveToken(token) {
+            this.removeCredentials();
+            dbCredentials.createDocument({
+                "token": token
+            });
+        },
+
+        removeCredentials() {
+            const credentials = dbCredentials.query({
+                select: []
+            });
+            credentials.forEach(credential => dbCredentials.deleteDocument(credential.id));
+        },
+
+        isConnected() {
+            return new Promise((resolve, reject) => {
                 const credentials = dbCredentials.query({
                     select: [],
                     limit: 1
                 });
-                if (credentials.length <= 0) {
-                    return null;
-                } else {
-                    return credentials[0].token;
-                }
-            },
-            removeCredentials: function() {
-                const credentials = dbCredentials.query({
-                    select: []
-                });
-                credentials.forEach(credential => dbCredentials.deleteDocument(credential.id));
-            },
-            goToApp: function() {
-                this.$navigateTo(App);
-            },
-            isConnected() {
-                return new Promise((resolve, reject) => {
-                    const credentials = dbCredentials.query({
-                        select: [],
-                        limit: 1
-                    });
-                    resolve(credentials.length > 0);
-                });
-            },
-            tokenVerification() {
-                return new Promise((resolve, reject) => {
-                    const url = `${this.api}/users/check-token`;
-                    axios.post(url, {}, )
-                });
-            }
+                resolve(credentials.length > 0);
+            });
+        },
+
+        verifyToken() {
+            return new Promise((resolve, reject) => {
+                const url = `${this.api}/users/check-token`;
+                axios.post(url, {}, )
+            });
+        },
+
+        goToApp() {
+            this.$navigateTo(App);
+        },
     },
+
     created() {
         this.isConnected()
-        .then((connected) => {
+        .then(connected => {
             if (connected) this.goToApp();
-        }).catch(err => console.error);
+        })
+        .catch(err => alert(err));
     }
 };
 </script>
