@@ -16,14 +16,16 @@ import App from './App.vue';
 
 if (!global.btoa) { global.btoa = btoa; }
 
+
 const dbName = 'credentials';
 const dbCredentials = new Couchbase(dbName);
 
 export default {
     data: function() {
         return {
-        mail: "",
-        password: "",
+            mail: "",
+            password: "",
+            api: "https://api.todolist.sherpa.one"
         };
     },
 
@@ -51,61 +53,69 @@ export default {
                 if (errors.length > 0) {
                     alert(errors);
                 } else {
-                        const basicAuth = {
-                            auth: {
-                                username: this.mail,
-                                password: this.password
-                            }
-                        };
+                    const basicAuth = {
+                        auth: {
+                            username: this.mail,
+                            password: this.password
+                        }
+                    };
 
-                        const url = "https://api.todolist.sherpa.one/users/signin";
-                        axios.post(url, {}, basicAuth)
-                        .then((result) => {
-                            this.saveCredentials(result);
-                            this.goToApp();
-                        })
-                        .catch(err => alert(err.message));
+                    const url = `${this.api}/users/signin`;
+                    axios.post(url, {}, basicAuth)
+                    .then((result) => {
+                        this.saveToken(result.data.token);
+                        this.goToApp();
+                    })
+                    .catch(err => alert(err.message));
                 }
             },
-            saveCredentials: function(connection) {
-                // this.removeCredentials();
+            saveToken: function(token) {
+                this.removeCredentials();
                 dbCredentials.createDocument({
-                    "token": connection.token
+                    "token": token
                 });
             },
+            getToken: function(token) {
+                const credentials = dbCredentials.query({
+                    select: [],
+                    limit: 1
+                });
+                if (credentials.length <= 0) {
+                    return null;
+                } else {
+                    return credentials[0].token;
+                }
+            },
             removeCredentials: function() {
-                const saved = dbCredentials.query({
+                const credentials = dbCredentials.query({
                     select: []
                 });
-                saved.forEach(cred => dbCredentials.deleteDocument(cred.id));
+                credentials.forEach(credential => dbCredentials.deleteDocument(credential.id));
             },
             goToApp: function() {
                 this.$navigateTo(App);
             },
             isConnected() {
-                const credentials = dbCredentials.query({
+                return new Promise((resolve, reject) => {
+                    const credentials = dbCredentials.query({
                         select: [],
                         limit: 1
                     });
-                    return credentials.length <= 0;
-                // return new Promise((resolve, reject) => {
-                //     const credentials = dbCredentials.query({
-                //         select: [],
-                //         limit: 1
-                //     });
-                //     if (credentials.length <= 0) resolve (false);
-                // });
+                    resolve(credentials.length > 0);
+                });
             },
-            // tokenVerification() {
-            //     return new Promise((resolve, reject) => {
-            //         const url = "https://api.todolist.sherpa.one/users/check-token";
-            //         axios.post(url, {}, )
-            //     });
-            // }
+            tokenVerification() {
+                return new Promise((resolve, reject) => {
+                    const url = `${this.api}/users/check-token`;
+                    axios.post(url, {}, )
+                });
+            }
     },
     created() {
-        alert(this.isConnected());
-        if (this.isConnected()) this.goToApp();
+        this.isConnected()
+        .then((connected) => {
+            if (connected) this.goToApp();
+        }).catch(err => console.error);
     }
 };
 </script>
