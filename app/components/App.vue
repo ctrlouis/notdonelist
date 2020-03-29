@@ -77,14 +77,21 @@ export default {
 		},
 
 		onUpdateTask(task) {
-			console.log(task);
-			const url = `${this.api}/users/${this.credentials.uuid}/todos/${task.uuid}`;
-			const bearerToken = {
-				headers: { Authorization: `Bearer ${this.credentials.token}` }
-			};
-			axios.patch(url, task, bearerToken)
-			.then(res => this.getTasks())
+			this.updateTask(task)
+			.then(task => this.getTasks())
 			.catch(err => alert(err));
+		},
+
+		updateTask(task) {
+			return new Promise((resolve, reject) => {
+				const url = `${this.api}/users/${this.credentials.uuid}/todos/${task.uuid}`;
+				const bearerToken = {
+					headers: { Authorization: `Bearer ${this.credentials.token}` }
+				};
+				axios.patch(url, task, bearerToken)
+				.then(res => resolve(res.data))
+				.catch(err => reject(err));
+			});
 		},
 
 		beforeCreated() {
