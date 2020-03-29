@@ -1,6 +1,11 @@
 <template>
 	<StackLayout>
-		<ListView for="task in leftTask" @itemTap="onItemTap">
+		<ListView for="task in tasks" @itemTap="onItemTap">
+		<v-template>
+			<TodoItem @toggleDone="onToggleDone" :currentTask="task"></TodoItem>
+		</v-template>
+		</ListView>
+		<!-- <ListView for="task in leftTask" @itemTap="onItemTap">
 		<v-template>
 			<TodoItem @toggleDone="onToggleDone" :currentTask="task"></TodoItem>
 		</v-template>
@@ -9,7 +14,7 @@
 		<v-template>
 			<TodoItem @toggleDone="onToggleDone" :currentTask="task"></TodoItem>
 		</v-template>
-		</ListView>
+		</ListView> -->
 	</StackLayout>
 </template>
 

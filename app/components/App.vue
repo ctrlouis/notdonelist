@@ -75,11 +75,10 @@ export default {
 		},
 
 		onCreateTap() {
-			this.$showModal(TodoCreate).then(newTask => {
-				dbTask.createDocument(newTask);
-
-				if (newTask) {
-					this.tasks.unshift(newTask);
+			this.$showModal(TodoCreate)
+			.then(created => {
+				if (created) {
+					this.getTasks();
 				}
 			});
 		},
