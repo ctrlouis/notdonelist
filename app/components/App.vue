@@ -52,9 +52,7 @@ export default {
 		getTasks() {
 			this.emptyTasks();
 			this.fetchTasks()
-			.then(tasks => {
-				tasks.forEach(task => this.tasks.push(tasks));
-			})
+			.then(tasks => this.tasks = tasks)
 			.catch(err => alert(err));
 		},
 

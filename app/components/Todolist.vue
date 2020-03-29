@@ -1,20 +1,15 @@
 <template>
 	<StackLayout>
-		<ListView for="task in tasks" @itemTap="onItemTap">
-		<v-template>
-			<TodoItem @toggleDone="onToggleDone" :currentTask="task"></TodoItem>
-		</v-template>
-		</ListView>
-		<!-- <ListView for="task in leftTask" @itemTap="onItemTap">
-		<v-template>
-			<TodoItem @toggleDone="onToggleDone" :currentTask="task"></TodoItem>
-		</v-template>
+		<ListView for="task in leftTask" @itemTap="onItemTap">
+			<v-template>
+				<TodoItem @toggleDone="onToggleDone" :currentTask="task"></TodoItem>
+			</v-template>
 		</ListView>
 		<ListView for="task in doneTask" @itemTap="onItemTap">
-		<v-template>
-			<TodoItem @toggleDone="onToggleDone" :currentTask="task"></TodoItem>
-		</v-template>
-		</ListView> -->
+			<v-template>
+				<TodoItem @toggleDone="onToggleDone" :currentTask="task"></TodoItem>
+			</v-template> 
+		</ListView>
 	</StackLayout>
 </template>
 
@@ -69,14 +64,15 @@ export default {
 
 	computed: {
 		leftTask() {
-			return this.tasks.filter(task => !task.done && !task.deleted);
+			return this.tasks.filter(task => !task.done);
 		},
 		doneTask() {
-			return this.tasks.filter(task => task.done &&!task.deleted);
-		},
-		notDeletedTask() {
-			return this.tasks.filter(task => !task.deleted);
+			return this.tasks.filter(task => task.done);
 		}
-  	}
+	},
+	  
+	created() {
+		// console.log(this.tasks);
+	}
 };
 </script>

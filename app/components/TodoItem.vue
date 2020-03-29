@@ -1,8 +1,7 @@
 <template>
   <GridLayout columns="100, *">
-    <!-- <Label col="0" :text="statusText" @tap="toggle"></Label> -->
+    <Label col="0" :text="statusText" @tap="toggle"></Label>
     <Label col="1" :text="currentTask.content" class="task-message" :class="isDone"></Label>
-    <Label col="1" text="test" class="task-message" :class="isDone"></Label>
     <!-- <Button v-if="isArchived" text="Recover" @tap="recover"></Button> -->
     <!-- <Button text="Delete" @tap="onDeleteTap"></Button> -->
   </GridLayout>
