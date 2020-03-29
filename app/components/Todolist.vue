@@ -2,12 +2,12 @@
 	<StackLayout>
 		<ListView for="task in leftTask" @itemTap="onItemTap">
 			<v-template>
-				<TodoItem @toggleDone="onToggleDone" :currentTask="task"></TodoItem>
+				<TodoItem :currentTask="task" @update="onUpdateTask"></TodoItem>
 			</v-template>
 		</ListView>
 		<ListView for="task in doneTask" @itemTap="onItemTap">
 			<v-template>
-				<TodoItem @toggleDone="onToggleDone" :currentTask="task"></TodoItem>
+				<TodoItem :currentTask="task" @update="onUpdateTask"></TodoItem>
 			</v-template> 
 		</ListView>
 	</StackLayout>
@@ -30,17 +30,18 @@ export default {
 	props: ["tasks"],
 
 	methods: {
-		onToggleDone(currentTask) {
-			const replaceTask = Object.assign(currentTask, {
-				done: !currentTask.done
-			});
+		onUpdateTask(updatedTask) {
+			this.$emit('updateTask', updatedTask);
+			// const replaceTask = Object.assign(currentTask, {
+			// 	done: !currentTask.done
+			// });
 		
-			db.updateDocument(currentTask._id, {
-				done: replaceTask.done
-			});
+			// db.updateDocument(currentTask._id, {
+			// 	done: replaceTask.done
+			// });
 
-			const index = this.tasks.findIndex(i => i._id === currentTask._id);
-			this.tasks = Object.assign([], this.tasks, { index: replaceTask });
+			// const index = this.tasks.findIndex(i => i._id === currentTask._id);
+			// this.tasks = Object.assign([], this.tasks, { index: replaceTask });
 		},
 
 		onItemTap(task) {

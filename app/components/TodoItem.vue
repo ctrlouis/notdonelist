@@ -8,6 +8,12 @@
 </template>
 
 <script>
+import axios from 'axios';
+import btoa from 'btoa';
+import conf from './../js/conf.json';
+
+if (!global.btoa) global.btoa = btoa;
+
 export default {
   props: ["currentTask"],
 
@@ -17,7 +23,15 @@ export default {
 
   methods: {
     toggle: function() {
-      this.$emit("toggleDone", this.currentTask);
+      const updatedTask = {
+        uuid: this.currentTask.uuid,
+        done: !this.currentTask.done
+      };
+      this.updateTask(updatedTask);
+    },
+
+    updateTask(updatedTask) {
+      this.$emit('update', updatedTask);
     }
   },
 

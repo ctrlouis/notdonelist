@@ -5,7 +5,7 @@
 		</ActionBar>
 
 		<StackLayout>
-			<Todolist :tasks="tasks" />
+			<Todolist :tasks="tasks" @updateTask="onUpdateTask"/>
 			<Button text="Archived" @tap="onArchivedTap"></Button>
 		</StackLayout>
 	</Page>
@@ -57,7 +57,7 @@ export default {
 		},
 
 		emptyTasks() {
-			while(this.tasks.length > 0) this.tasks.shift();
+			// while(this.tasks.length > 0) this.tasks.shift();
 		},
 
 		fetchTasks() {
@@ -93,6 +93,17 @@ export default {
 					curve: "easeOut"
 				}
 			});
+		},
+
+		onUpdateTask(task) {
+			console.log(task);
+			const url = `${this.api}/users/${this.credentials.uuid}/todos/${task.uuid}`;
+			const bearerToken = {
+				headers: { Authorization: `Bearer ${this.credentials.token}` }
+			};
+			axios.patch(url, task, bearerToken)
+			.then(res => this.getTasks())
+			.catch(err => alert(err));
 		},
 
 		beforeCreated() {
