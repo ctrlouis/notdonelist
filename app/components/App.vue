@@ -6,7 +6,6 @@
 
 		<StackLayout>
 			<Todolist :tasks="tasks" @updateTask="onUpdateTask"/>
-			<Button text="Archived" @tap="onArchivedTap"></Button>
 		</StackLayout>
 	</Page>
 </template>
@@ -17,7 +16,6 @@ import btoa from 'btoa';
 import Auth from "./Auth";
 import Todolist from "./Todolist";
 import TodoCreate from "./TodoCreate";
-import TodoArchived from "./TodoArchived";
 import { Couchbase, ConcurrencyMode } from 'nativescript-couchbase-plugin';
 import appSettings from "tns-core-modules/application-settings";
 
@@ -35,10 +33,7 @@ const dbCredentials = new Couchbase(dbCredName);
 // });
 
 export default {
-	components: {
-		Todolist,
-		TodoArchived
-	},
+	components: { Todolist },
 
 	data() {
 		return {
@@ -77,20 +72,6 @@ export default {
 			.then(created => {
 				if (created) {
 					this.getTasks();
-				}
-			});
-		},
-
-		onArchivedTap() {
-			this.$navigateTo(TodoArchived, {
-				props: {
-					tasks: this.tasks
-				},
-				animated: true,
-				transitionAndroid: {
-					name: "explode",
-					duration: 1000,
-					curve: "easeOut"
 				}
 			});
 		},
