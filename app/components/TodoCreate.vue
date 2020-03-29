@@ -41,7 +41,7 @@ export default {
  				this.createTask(newTask)
 				.then(res => {
 					console.log(res);
-					this.$modal.close(false);
+					this.$modal.close(true);
 				})
 				.catch(err => {
 					console.log(err.response.request._response);
