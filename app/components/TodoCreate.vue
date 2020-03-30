@@ -50,7 +50,7 @@ export default {
 
 			if (this.media) {
 				console.log("media");
-				this.uploadFile(this.media);
+				this.uploadFile(this.media.src);
 			} else if (this.checkForm()) {
 				this.createTask(newTask)
 				.then(res => {
@@ -135,23 +135,15 @@ export default {
 	 	uploadFile(file) {
  			const mediaType = "image";
  			const timestamp = new Date().getTime();
-			console.log("timestamp");
-			console.log(timestamp);
  			const sign = sha1(`timestamp=${timestamp}${conf.cloudinary.secret}`);
-			console.log("sign");
-			console.log(sign);
  			const url = `${conf.cloudinary.baseUrl}/${conf.cloudinary.name}/${mediaType}/upload`;
-			console.log("url");
-			console.log(url);
  			const data = {
  				api_key: conf.cloudinary.key,
     			resourcetype: mediaType,
 				file: file,
     			timestamp: timestamp,
     			signature: sign
-			 };
-			console.log("data");
-			console.log(data);
+ 			};
  			axios.post(url, data)
  			.then((res) => {
  				console.log(res);
