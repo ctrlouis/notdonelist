@@ -17,6 +17,7 @@
 <script>
 import axios from 'axios';
 import btoa from 'btoa';
+import sha1 from 'sha1';
 import { Couchbase, ConcurrencyMode } from 'nativescript-couchbase-plugin';
 import dialogs from 'tns-core-modules/ui/dialogs';
 import * as camera from "nativescript-camera";
@@ -131,41 +132,33 @@ export default {
 			});
 		},
 
-		// *********** Upload file to Cloudinary ******************** //
 	 	uploadFile(file) {
-			const cloudName = "ctrlouis";
-			const url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
-			const xhr = new XMLHttpRequest();
-			const fd = new FormData();
-			xhr.open('POST', url, true);
-			xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-
-			// Update progress (can be used to show progress indicator)
-			xhr.upload.addEventListener("progress", function(e) {
-				let progress = Math.round((e.loaded * 100.0) / e.total);
-
-				console.log(`fileuploadprogress data.loaded: ${e.loaded}, data.total: ${e.total}`);
+ 			const mediaType = "image";
+ 			const timestamp = new Date().getTime();
+			console.log("timestamp");
+			console.log(timestamp);
+ 			const sign = sha1(`timestamp=${timestamp}${conf.cloudinary.secret}`);
+			console.log("sign");
+			console.log(sign);
+ 			const url = `${conf.cloudinary.baseUrl}/${conf.cloudinary.name}/${mediaType}/upload`;
+			console.log("url");
+			console.log(url);
+ 			const data = {
+ 				api_key: conf.cloudinary.key,
+    			resourcetype: mediaType,
+				file: file,
+    			timestamp: timestamp,
+    			signature: sign
+			 };
+			console.log("data");
+			console.log(data);
+ 			axios.post(url, data)
+ 			.then((res) => {
+ 				console.log(res);
+ 			}).catch(err => {
+ 				console.error(err.response.request._response);
+				alert(err);
 			});
-
-			xhr.onreadystatechange = function(e) {
-				if (xhr.readyState == 4 && xhr.status == 200) {
-					// File uploaded successfully
-					let response = JSON.parse(xhr.responseText);
-					// https://res.cloudinary.com/cloudName/image/upload/v1483481128/public_id.jpg
-					let url = response.secure_url;
-					// Create a thumbnail of the uploaded image, with 150px width
-					let tokens = url.split('/');
-					tokens.splice(-2, 0, 'w_150,c_scale');
-					let img = new Image(); // HTML5 Constructor
-					img.src = tokens.join('/');
-					img.alt = response.public_id;
-				}
-			};
-
-			fd.append('upload_preset', 'example');
-			fd.append('tags', 'browser_upload'); // Optional - add tag for image admin in Cloudinary
-			fd.append('file', file);
-			xhr.send(fd);
 		}
 	},
 
@@ -174,7 +167,6 @@ export default {
 			limit: 1
 		});
 		this.credentials = credentials[0];
-		console.log("wtf");
 	}
 };
 </script>
