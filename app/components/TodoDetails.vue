@@ -64,17 +64,33 @@ export default {
         .catch(err => reject(err));
       });
     },
-    
+
     onDeleteTap: function() {
-      // this.$showModal(TodoConfirm).then(confirmation => {
-      //   if (confirmation) {
-      //     this.selectedTask.deleted = true;
-      //     dbTask.updateDocument(this.selectedTask._id, {
-      //       deleted: this.selectedTask.deleted
-      //     });
-      //     this.$navigateBack();
-      //   }
-      // });
+      prompt({
+        title: "Warning",
+        message: "This task will be delete forever",
+        okButtonText: "Delete",
+        cancelButtonText: "Keep it"
+      }).then(result => {
+        if (result.result) {
+          this.deleteTask(this.selectedTask.uuid)
+          .then(res => this.$navigateBack())
+          .catch(err => alert(err));
+        }
+      });
+    },
+
+    deleteTask(taskUuid) {
+      return new Promise((resolve, reject) => {
+        const url = `${conf.api}/users/${this.credentials.uuid}/todos/${taskUuid}`;
+        console.log(url);
+        const bearerToken = {
+          headers: { Authorization: `Bearer ${this.credentials.token}` }
+        };
+        axios.delete(url, bearerToken)
+        .then(res => resolve(res.data.todo))
+        .catch(err => reject(err));
+    });
     }
   },
 
