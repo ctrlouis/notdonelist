@@ -1,3 +1,9 @@
 {
-    "api": "https://api.todolist.sherpa.one"
+    "api": "https://api.todolist.sherpa.one",
+    "cloudinary": {
+        "baseUrl": "https://api.cloudinary.com/v1_1",
+        "name": "ctrlouis",
+        "key": "898972351978886",
+        "secret": "rztDmw-Va0_l6b74QpYMr4W2hWU"
+    }
 }
