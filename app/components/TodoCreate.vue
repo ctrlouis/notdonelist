@@ -49,8 +49,8 @@ export default {
 			};
 
 			if (this.media) {
-				console.log("media");
-				this.uploadFile(this.media.src);
+				// console.log(this.media.src._android);
+				this.uploadFile(this.media.src._android);
 			} else if (this.checkForm()) {
 				this.createTask(newTask)
 				.then(res => {
