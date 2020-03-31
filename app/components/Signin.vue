@@ -1,9 +1,11 @@
 <template>
-    <StackLayout>
+    <StackLayout verticalAligment="center">
         <TextField keyboardType="email" v-model="mail" hint="Email"></TextField>
         <TextField secure="true" v-model="password" hint="Passsword"></TextField>
         <Button text="Signin" @tap="onSignin"></Button>
-        <Label text="No account? Create one!" @tap="$emit('toggleAccount')"></Label>
+        <Label text="No account? Create one!" class="link" @tap="$emit('toggleAccount')"></Label>
+        <DockLayout stretchLastChild="false">
+        </DockLayout>
     </StackLayout>
 </template>
 

@@ -3,10 +3,10 @@
         <TextField keyboardType="email" v-model="mail" hint="Mail"></TextField>
         <TextField v-model="firstname" hint="FirstName"></TextField>
         <TextField v-model="lastname" hint="Lastname"></TextField>
-        <Label :text="gender"></Label>
-        <Switch v-model="switchGender" @checkedChange="toggleGender"></Switch>
+        <Label :text="gender.select"></Label>
+        <Switch v-model="gender.switch" @checkedChange="toggleGender"></Switch>
         <Button text="Signup" @tap="onSignup"></Button>
-        <Label text="Already have account? Signin here" @tap="$emit('toggleAccount')"></Label>
+        <Label text="Already have account? Signin here" class="link" @tap="$emit('toggleAccount')"></Label>
     </StackLayout>
 </template>
 
@@ -21,7 +21,10 @@ export default {
       mail: "",
       firstname: "",
       lastname: "",
-      gender: "male"
+      gender: {
+          switch: true,
+          select: "male"
+      }
     };
   },
 
@@ -102,4 +105,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>

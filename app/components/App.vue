@@ -1,6 +1,6 @@
 <template>
 	<Page>
-		<ActionBar title="Todolist">
+		<ActionBar title="NotDoneList">
 			<ActionItem text="Add" @tap="onCreateTap"></ActionItem>
 		</ActionBar>
 

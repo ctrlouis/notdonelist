@@ -1,10 +1,12 @@
 <template>
 	<StackLayout>
+		<Label v-if="leftTask.length > 0" text="Task do do"></Label>
 		<ListView for="task in leftTask" @itemTap="onItemTap">
 			<v-template>
 				<TodoItem :currentTask="task" @update="onUpdateTask"></TodoItem>
 			</v-template>
 		</ListView>
+		<Label v-if="doneTask.length > 0">Task left</Label>
 		<ListView for="task in doneTask" @itemTap="onItemTap">
 			<v-template>
 				<TodoItem :currentTask="task" @update="onUpdateTask"></TodoItem>
@@ -77,3 +79,11 @@ export default {
 	}
 };
 </script>
+
+<style scoped>
+
+Label {
+	color: aqua;
+}
+
+</style>

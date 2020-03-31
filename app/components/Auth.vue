@@ -1,9 +1,10 @@
 <template>
-  <Page>
-    <StackLayout>
-        <Signin v-if="account" @toggleAccount="toggleAccount"></Signin>
-        <Signup v-else @toggleAccount="toggleAccount"></Signup>
-    </StackLayout>
+  <Page actionBarHidden="true">
+		<StackLayout>
+			<Label text="The NotDoneList" fontWeight="bold" class="mainTitle"/>
+			<Signin v-if="account" @toggleAccount="toggleAccount"></Signin>
+			<Signup v-else @toggleAccount="toggleAccount"></Signup>
+		</StackLayout>
   </Page>
 </template>
 
@@ -11,7 +12,6 @@
 import App from './App.vue';
 import Signin from "./Signin";
 import Signup from "./Signup";
-import appSettings from "tns-core-modules/application-settings";
 import { Couchbase, ConcurrencyMode } from 'nativescript-couchbase-plugin';
 
 
@@ -38,6 +38,13 @@ export default {
 };
 </script>
 
-<style scoped>
-
+<style>
+Label {
+    text-align: center;
+}
+StackLayout {
+	padding: 0 10%;
+	text-align: left;
+	vertical-align: center;
+}
 </style>

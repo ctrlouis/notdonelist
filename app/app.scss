@@ -10,8 +10,25 @@
 
 // import perso
 @import './animate.css';
+@import './scss/color.scss';
 
 ActionBar {
-    background-color: #FF8C00;
-    color: #ffffff;
+    background-color: $darkColor;
+    color: $lightFontColor;
+}
+
+.link {
+    color: $lightColor;
+}
+
+Button {
+    background-color: $primaryColor;
+    color: $lightFontColor;
+    text-align: center;
+}
+
+.maintitle {
+    color: $darkColor;
+    font-size: 3em;
+    font-weight: bold;
 }
