@@ -3,6 +3,9 @@
     <StackLayout>
       <Button text="Go back" @tap="onBackTap"></Button>
       <Label :text="selectedTask.content"></Label>
+      <WrapLayout v-if="selectedTask.media_url">
+			  <Image :src="selectedTask.media_url" width="75" height="75" />
+			</WrapLayout>
       <Button :text="statusText" @tap="toggle"></Button>
       <Button v-if="selectedTask.done" text="Delete" @tap="onDeleteTap"></Button>
     </StackLayout>
@@ -14,6 +17,7 @@ import axios from 'axios';
 import btoa from 'btoa';
 import { Couchbase, ConcurrencyMode } from 'nativescript-couchbase-plugin';
 import TodoConfirm from "./TodoConfirm";
+import { Image } from "tns-core-modules/ui/image";
 import conf from './../js/conf.json';
 
 if (!global.btoa) global.btoa = btoa;

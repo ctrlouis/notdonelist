@@ -55,7 +55,6 @@ export default {
 			};
 
 			if (this.media) {
-				// this.uploadFile(this.media);
 				this.upload(this.media);
 			} else if (this.checkForm()) {
 				this.createTask(newTask)
@@ -282,7 +281,7 @@ export default {
 			});
 
 			const newTask = {
-				text: this.task,
+				content: this.task,
 				type: "picture",
 				media_url: uploaded_image.url
 			};
@@ -294,7 +293,10 @@ export default {
 					message:"`Task create !",
 					okButtonText: "OK"
 				});
-			}).catch(err => alert(err));
+			}).catch(err => {
+				console.log(err.response.request._response);
+				alert(err);
+			});
 		},
 		completeHandler(e) {
 			this.is_sending = false;
