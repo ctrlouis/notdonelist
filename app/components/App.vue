@@ -93,20 +93,6 @@ export default {
 				.catch(err => reject(err));
 			});
 		},
-
-		beforeCreated() {
-			// if (true) {
-			// 	this.$navigateTo(Auth, {
-			// 		props: {},
-			// 		animated: true,
-			// 		transitionAndroid: {
-			// 			name: "fade",
-			// 			duration: 1000,
-			// 			curve: "easeOut"
-			// 		}
-			// 	});
-			// }
-		}
 	},
 
 	created() {
@@ -120,10 +106,4 @@ export default {
 </script>
 
 <style scoped>
-.message {
-	vertical-align: center;
-	text-align: center;
-	font-size: 20;
-	color: #333333;
-}
 </style>
