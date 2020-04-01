@@ -1,15 +1,15 @@
 <template>
 	<Page>
-		<StackLayout>
+		<StackLayout class="modal">
 			<Label text="Add new item"></Label>
 			<TextField v-model="task" hint="I have to..."></TextField>
+			<StackLayout v-if="media">
+				<Image :src="media.src" width="100" height="100" />
+			</StackLayout>
 			<Button text="Take Picture" @tap="takePicture" />
 			<Button text="Choose Picture" @tap="selectPicture" />
-			<WrapLayout v-if="media">
-				<Image :src="media.src" width="75" height="75" />
-			</WrapLayout>
-			<Button text="Save" @tap="onSaveTap"></Button>
-			<Button text="Cancel" @tap="onCancelTap"></Button>
+			<Button text="Save" class="save" @tap="onSaveTap"></Button>
+			<Button text="Cancel" class="cancel" @tap="onCancelTap"></Button>
 		</StackLayout>
 	</Page>
 </template>
@@ -42,7 +42,8 @@ export default {
 			task: "",
 			credentials: null,
 			media: null,
-			is_sending: false
+			is_sending: false,
+			errors: []
 		};
 	},
 
@@ -316,3 +317,18 @@ export default {
 	}
 };
 </script>
+
+<style lang="scss" scoped>
+.modal {
+	width: 100%;
+	height: 60%;
+}
+
+.save {
+	background-color: green;
+}
+
+.cancel {
+	background-color: orange;
+}
+</style>
