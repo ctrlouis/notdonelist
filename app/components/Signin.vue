@@ -3,7 +3,7 @@
         <StackLayout v-if="connected">
             <ActivityIndicator :busy="loading" />
         </StackLayout>
-        <StackLayout v-else>
+        <StackLayout v-if="!connected">
             <TextField keyboardType="email" v-model="mail" hint="Email"></TextField>
             <TextField secure="true" v-model="password" hint="Passsword"></TextField>
             <Button text="Signin" @tap="onSignin"></Button>
@@ -144,6 +144,7 @@ export default {
         })
         .catch(err => alert(err))
         .then(() => {
+            this.connected = false;
             this.loading = false;
         });
     }
