@@ -1,12 +1,12 @@
 <template>
 	<StackLayout>
-		<Label v-if="leftTask.length > 0" text="Task do do"></Label>
+		<Label v-if="leftTask.length > 0" text="Left to do"></Label>
 		<ListView for="task in leftTask" @itemTap="onItemTap">
 			<v-template>
 				<TodoItem :currentTask="task" @update="onUpdateTask"></TodoItem>
 			</v-template>
 		</ListView>
-		<Label v-if="doneTask.length > 0">Task left</Label>
+		<Label v-if="doneTask.length > 0">Task done</Label>
 		<ListView for="task in doneTask" @itemTap="onItemTap">
 			<v-template>
 				<TodoItem :currentTask="task" @update="onUpdateTask"></TodoItem>
@@ -72,18 +72,12 @@ export default {
 		doneTask() {
 			return this.tasks.filter(task => task.done);
 		}
-	},
-	  
-	created() {
-		// console.log(this.tasks);
 	}
 };
 </script>
 
 <style scoped>
-
 Label {
-	color: aqua;
+	color: #512da8;
 }
-
 </style>
