@@ -1,11 +1,15 @@
 <template>
     <StackLayout verticalAligment="center">
-        <TextField keyboardType="email" v-model="mail" hint="Email"></TextField>
-        <TextField secure="true" v-model="password" hint="Passsword"></TextField>
-        <Button text="Signin" @tap="onSignin"></Button>
-        <Label text="No account? Create one!" class="link" @tap="$emit('toggleAccount')"></Label>
-        <DockLayout stretchLastChild="false">
-        </DockLayout>
+        <StackLayout v-if="connected">
+            <ActivityIndicator :busy="loading" />
+        </StackLayout>
+        <StackLayout v-else>
+            <TextField keyboardType="email" v-model="mail" hint="Email"></TextField>
+            <TextField secure="true" v-model="password" hint="Passsword"></TextField>
+            <Button text="Signin" @tap="onSignin"></Button>
+            <Label text="No account? Create one!" class="link" @tap="$emit('toggleAccount')"></Label>
+            <ActivityIndicator :busy="loading" />
+        </StackLayout>
     </StackLayout>
 </template>
 
@@ -27,12 +31,15 @@ export default {
         return {
             mail: "",
             password: "",
-            api: "https://api.todolist.sherpa.one"
+            api: "https://api.todolist.sherpa.one",
+            connected: true,
+            loading: true
         };
     },
 
     methods: {
         onSignin() {
+            this.loading = true;
             const errors = this.checkForm();
             if (errors.length > 0) {
                 alert(errors);
@@ -106,6 +113,7 @@ export default {
                     select: [],
                     limit: 1
                 });
+                if (credentials && credentials[0] && credentials[0].token)
                 this.verifyToken(credentials[0].token)
                 .then(connected => resolve(connected))
                 .catch(err => reject(err));
@@ -134,7 +142,10 @@ export default {
         .then(connected => {
             if (connected) this.goToApp();
         })
-        .catch(err => alert(err));
+        .catch(err => alert(err))
+        .then(() => {
+            this.loading = false;
+        });
     }
 };
 </script>
