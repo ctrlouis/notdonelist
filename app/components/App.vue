@@ -1,5 +1,5 @@
 <template>
-	<Page>
+	<Page @navigatedTo="onNavigatingTo">
 		<ActionBar title="NotDoneList">
 			<ActionItem text="Add" @tap="onCreateTap"></ActionItem>
 		</ActionBar>
@@ -93,6 +93,10 @@ export default {
 				.catch(err => reject(err));
 			});
 		},
+
+		onNavigatingTo() {
+			this.getTasks();
+		}
 	},
 
 	created() {
