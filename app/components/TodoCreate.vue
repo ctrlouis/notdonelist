@@ -275,18 +275,17 @@ export default {
 
 			console.log(uploaded_image.url); //URL to save
 
-			alert({
-				title: "Success",
-				message: `Image has been uploaded ! Here is it's url : ${uploaded_image.url}`,
-				okButtonText: "OK"
-			});
+			// alert({
+			// 	title: "Success",
+			// 	message: `Image has been uploaded ! Here is it's url : ${uploaded_image.url}`,
+			// 	okButtonText: "OK"
+			// });
 
 			const newTask = {
 				content: this.task,
 				type: "picture",
 				media_url: uploaded_image.url
 			};
-			console.log(newTask);
 			this.createTask(newTask)
 			.then(() => {
 				alert({
@@ -294,9 +293,11 @@ export default {
 					message:"`Task create !",
 					okButtonText: "OK"
 				});
+				this.$modal.close(true);
 			}).catch(err => {
 				console.log(err.response.request._response);
 				alert(err);
+				this.$modal.close(false);
 			});
 		},
 		completeHandler(e) {
