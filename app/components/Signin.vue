@@ -113,10 +113,13 @@ export default {
                     select: [],
                     limit: 1
                 });
-                if (credentials && credentials[0] && credentials[0].token)
-                this.verifyToken(credentials[0].token)
-                .then(connected => resolve(connected))
-                .catch(err => reject(err));
+                if (credentials && credentials[0] && credentials[0].token) {
+                    this.verifyToken(credentials[0].token)
+                    .then(connected => resolve(connected))
+                    .catch(err => reject(err));
+                } else {
+                    reject();
+                }
             });
         },
 
@@ -142,8 +145,7 @@ export default {
         .then(connected => {
             if (connected) this.goToApp();
         })
-        .catch(err => alert(err))
-        .then(() => {
+        .finally(() => {
             this.connected = false;
             this.loading = false;
         });
