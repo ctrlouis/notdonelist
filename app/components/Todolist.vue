@@ -34,16 +34,6 @@ export default {
 	methods: {
 		onUpdateTask(updatedTask) {
 			this.$emit('updateTask', updatedTask);
-			// const replaceTask = Object.assign(currentTask, {
-			// 	done: !currentTask.done
-			// });
-		
-			// db.updateDocument(currentTask._id, {
-			// 	done: replaceTask.done
-			// });
-
-			// const index = this.tasks.findIndex(i => i._id === currentTask._id);
-			// this.tasks = Object.assign([], this.tasks, { index: replaceTask });
 		},
 
 		onItemTap(task) {

@@ -1,5 +1,5 @@
 <template>
-	<Page @navigatedTo="onNavigatingTo">
+	<Page @navigatedTo="getTasks">
 		<ActionBar title="NotDoneList">
 			<ActionItem text="Add" @tap="onCreateTap"></ActionItem>
 		</ActionBar>
@@ -11,60 +11,36 @@
 </template>
 
 <script>
-import axios from 'axios';
-import btoa from 'btoa';
-import Auth from "./Auth";
 import Todolist from "./Todolist";
 import TodoCreate from "./TodoCreate";
 import { Couchbase, ConcurrencyMode } from 'nativescript-couchbase-plugin';
 import appSettings from "tns-core-modules/application-settings";
 
-if (!global.btoa) global.btoa = btoa;
 
+const dbName = 'tasks';
+const db = new Couchbase(dbName);
 
-const dbTasksName = 'tasks';
-const dbTask = new Couchbase(dbTasksName);
-const dbCredName = 'credentials';
-const dbCredentials = new Couchbase(dbCredName);
-
-// const tasks = db.query({
-// 	select: ['_id', 'message', 'done', 'deleted'],
-// 	from: dbName
-// });
+let tasks = db.query({
+	select: ['_id', 'content', 'done'],
+	from: dbName
+});
 
 export default {
 	components: { Todolist },
 
 	data() {
 		return {
-			tasks: [],
-			credentials: null,
-			api: "https://api.todolist.sherpa.one"
+			tasks: tasks
 		};
 	},
 
 	methods: {
 		getTasks() {
-			this.emptyTasks();
-			this.fetchTasks()
-			.then(tasks => this.tasks = tasks)
-			.catch(err => alert(err));
-		},
-
-		emptyTasks() {
-			// while(this.tasks.length > 0) this.tasks.shift();
-		},
-
-		fetchTasks() {
-			return new Promise((resolve, reject) => {
-				const url = `${this.api}/users/${this.credentials.uuid}/todos`;
-                const bearerToken = {
-					headers: { Authorization: `Bearer ${this.credentials.token}` }
-				};
-                axios.get(url, bearerToken)
-                .then(res => resolve(res.data.todos))
-                .catch(err => reject(err));
-            });
+			tasks = db.query({
+				select: ['_id', 'content', 'done'],
+				from: dbName
+			});
+			this.tasks = tasks;
 		},
 
 		onCreateTap() {
@@ -77,34 +53,12 @@ export default {
 		},
 
 		onUpdateTask(task) {
-			this.updateTask(task)
-			.then(task => this.getTasks())
-			.catch(err => alert(err));
-		},
-
-		updateTask(task) {
-			return new Promise((resolve, reject) => {
-				const url = `${this.api}/users/${this.credentials.uuid}/todos/${task.uuid}`;
-				const bearerToken = {
-					headers: { Authorization: `Bearer ${this.credentials.token}` }
-				};
-				axios.patch(url, task, bearerToken)
-				.then(res => resolve(res.data))
-				.catch(err => reject(err));
+			db.updateDocument(task._id, {
+				"content": task.content,
+				"done": task.done
 			});
-		},
-
-		onNavigatingTo() {
 			this.getTasks();
 		}
-	},
-
-	created() {
-		const credentials = dbCredentials.query({
-			limit: 1
-		});
-		this.credentials = credentials[0];
-		this.getTasks();
 	}
 };
 </script>

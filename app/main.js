@@ -3,7 +3,6 @@
 
 import Vue from 'nativescript-vue';
 import App from './components/App';
-import Auth from './components/Auth';
 
 // personnal import
 // import LocalStorage from './js/LocalStorage';
@@ -17,7 +16,7 @@ Vue.config.silent = (TNS_ENV === 'production');
 
 new Vue({
     render: function(h) {
-        return h("frame", [h(Auth)]);
+        return h("frame", [h(App)]);
     }
 }).$start();
 
