@@ -4,7 +4,7 @@
       <Button text="Go back" @tap="onBackTap"></Button>
       <Label :text="selectedTask.content"></Label>
       <WrapLayout v-if="selectedTask.media_url">
-			  <Image :src="selectedTask.media_url" width="75" height="75" />
+			  <Image :src="selectedTask.media_url" width="250" height="250" />
 			</WrapLayout>
       <Button :text="statusText" @tap="toggle"></Button>
       <Button v-if="selectedTask.done" text="Delete" @tap="onDeleteTap"></Button>
