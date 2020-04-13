@@ -23,9 +23,7 @@ tns build <platform> --env.production
 ```
 
 
-
 ## Avancement
-
 
 ### Mode hors ligne (localstorage)
 
@@ -33,7 +31,6 @@ tns build <platform> --env.production
 - Modification du status de la Todo (faite ou non)
 - Visualisation du détails de la Todo
 - Suppression de la Todo
-
 
 ### API
 
@@ -44,8 +41,9 @@ tns build <platform> --env.production
 - Visualisation du détails de la Todo via l'api
 - Suppression de la Todo via l'api
 
-
 ### Media
 
 - Ajout d'une photo dans une Todo
+- Possibilité de prendre une photo
+- Possibilité de selecetionner une photo de la galerie
 - Visualisation de la photo de la Todo depuis les détails de la Todo
